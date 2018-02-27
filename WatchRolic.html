@@ -135,6 +135,8 @@
 
                     const box = document.getElementById("picture_box_" + count);
 
+                    console.log("Print frame: " + now);
+
                     box.style.marginLeft = frame.x + "px";
                     box.style.marginTop = frame.y + "px";
                     box.style.width = frame.w + "px";
@@ -142,9 +144,10 @@
 
                     now++;
 
-                    if(now === lastFrame) {
+                    if(now === lastFrame + 1) {
+                        console.log("STOP");
                         clearInterval(inter);
-                        document.getElementById("startBtn").click();
+                        // document.getElementById("startBtn").click();
                     }
                 }
             }, 50);
