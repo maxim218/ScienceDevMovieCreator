@@ -341,6 +341,8 @@ class MainClass {
         const lastFrameTextField = document.getElementById("q6_t1");
         const btnWatchRolic = document.getElementById("q6_b1");
 
+        const ttt = this;
+
         btnWatchRolic.onclick = () => {
             let value = lastFrameTextField.value;
 
@@ -372,6 +374,43 @@ class MainClass {
             console.log("----------------------------------------------");
             console.log(answer);
             console.log("----------------------------------------------");
+
+            const loginField = localStorage.getItem("ScienceDev_variable_man_nickname");
+            const passwordField = localStorage.getItem("ScienceDev_variable_man_password");
+            const movieName = localStorage.getItem("ScienceDev_variable_rolik_name");
+            const movieContent = answer;
+
+            const bodyObj = {
+                loginField: loginField,
+                passwordField: passwordField,
+                movieName: movieName,
+                movieContent: movieContent
+            };
+
+            function getRandString() {
+                let s = "";
+                for(let i = 0; i < 5; i++) {
+                    s += (Math.random() + "rol");
+                }
+                return s;
+            }
+
+            const bodyString = JSON.stringify(bodyObj);
+            const url = "http://localhost:5000/create_movie/" + getRandString();
+
+            let r = new XMLHttpRequest();
+            r.open("POST", url, true);
+            r.setRequestHeader("Content-Type","application/json;charset=UTF-8");
+            r.send(bodyString);
+            r.onreadystatechange = function() {
+                if(r.readyState === 4 && r.status === 200) {
+                    const answer = r.responseText + "";
+                    console.log(answer);
+                    ttt.alertWindow.showMessage("Сохранение ролика прошло успешно.", () => {
+
+                    });
+                }
+            }
         }
     }
 }

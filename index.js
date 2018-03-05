@@ -9,7 +9,7 @@ app.get('/', function(req, res) {
     res.sendfile("static/index.html");
 });
 
-let port = process.env.PORT || 5000;
+let port = process.env.PORT || 5007;
 app.listen(port);
 
 console.log("Server works on port " + port);
