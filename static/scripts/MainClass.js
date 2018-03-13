@@ -331,8 +331,8 @@ class MainClass {
                 if(r.readyState === 4 && r.status === 200) {
                     const answer = r.responseText + "";
                     console.log(answer);
-                    ttt.alertWindow.showMessage("Сохранение ролика прошло успешно.", () => {
-
+                    ttt.alertWindow.showMessageWithCallback("Сохранение ролика прошло успешно.", () => {
+                        let wwwWind = open("./watchrolic.html");
                     });
                 }
             }

@@ -4,26 +4,34 @@
     <meta charset="UTF-8">
     <title>Просмотр ролика</title>
     <style>
-        #inputBox {
-            position: absolute;
-            left: 50px;
-            top: 50px;
-            width: 300px;
-            height: 150px;
-            padding: 15px;
-            background-color: #CCCCCC;
-            border: 1px solid black;
+        @font-face {
+            font-family: myFamily;
+            src: url(./fonts/9041.ttf);
+        }
+
+        body {
+            background-color: #666666;
+            font-family: myFamily;
+            font-size: 20px;
+            padding: 0px;
         }
 
         #rolicBox {
-            position: absolute;
+            position: fixed;
             left: 50px;
-            top: 250px;
-            width: 300px;
-            height: 250px;
-            background-color: #CCCCCC;
+            top: 150px;
             padding: 0px;
             border: 1px solid black;
+            overflow-y: hidden;
+            overflow-x: hidden;
+        }
+
+        #labelBox {
+            position: fixed;
+            left: 50px;
+            top: 40px;
+            color: white;
+            padding: 0px;
         }
 
         .canvasImage {
@@ -34,25 +42,37 @@
 </head>
 <body>
 
-<div id = "inputBox">
-    <p>Ролик в формате JSON</p>
-    <textarea id = "inpField"></textarea>
-    <br>
-    <br>
-    <button id = "startBtn">Просмотр</button>
-</div>
-
+<div id = "labelBox"></div>
 <div id = "rolicBox"></div>
+
+<script src = "./ajaxFunctions.js"></script>
+
+<script>
+    function loadMovie(callback) {
+        const login = localStorage.getItem("ScienceDev_variable_man_nickname") + "";
+        const rolic = localStorage.getItem("ScienceDev_variable_rolik_name") + "";
+
+        sendPost("get_rolic_by_login_and_name", {
+            loginField: login,
+            movieField: rolic
+        }, (result) => {
+            callback(result + "");
+        });
+    }
+</script>
 
 <script>
     window.onload = function() {
-        document.getElementById("startBtn").onclick = function() {
+        loadMovie((stringLoadContent) => {
             console.log("Start");
             console.log("---------------------------------");
 
+            const labelBox = document.getElementById("labelBox");
+            labelBox.innerHTML = "<h1>Ролик: " + localStorage.getItem("ScienceDev_variable_rolik_name") + "</h1>";
+
             const rolicBox = document.getElementById("rolicBox");
 
-            const contentText = document.getElementById("inpField").value;
+            const contentText = stringLoadContent + "";
 
             const obj = JSON.parse(contentText);
 
@@ -71,8 +91,7 @@
                 const image = imagesArr[i];
                 const count = image.name;
 
-                let textHtml = "<div id = 'picture_box_" + count + "' style = 'position: absolute; padding: 0px; height: 150px; width: 150px; margin-left: 0px; margin-top: 0px;'></div>";
-                rolicBox.innerHTML += textHtml;
+                rolicBox.innerHTML += "<div id = 'picture_box_" + count + "' style = 'position: absolute; padding: 0px; height: 150px; width: 150px; margin-left: 0px; margin-top: 0px;'></div>";
                 document.getElementById("picture_box_" + count).innerHTML = "<img src = '" + image.content + "' class = 'canvasImage'>";
             }
 
@@ -150,7 +169,7 @@
                     }
                 }
             }, 50);
-        }
+        });
     }
 </script>
 

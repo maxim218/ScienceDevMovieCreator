@@ -406,8 +406,8 @@ class MainClass {
                 if(r.readyState === 4 && r.status === 200) {
                     const answer = r.responseText + "";
                     console.log(answer);
-                    ttt.alertWindow.showMessage("Сохранение ролика прошло успешно.", () => {
-
+                    ttt.alertWindow.showMessageWithCallback("Сохранение ролика прошло успешно.", () => {
+                        let wwwWind = open("./watchrolic.html");
                     });
                 }
             }
@@ -867,6 +867,10 @@ class LineBoxManager {
 
 
 class AlertWindow {
+    static writeOK() {
+        console.log("Click OK");
+    }
+
     constructor() {
         console.log("Create AlertWindow");
 
@@ -874,11 +878,8 @@ class AlertWindow {
         this.alertMessageBox = document.getElementById("messageAlertBox");
         this.parag = document.getElementById("messageContentParag");
 
-        this.addEventToCloseBtn();
-    }
-
-    addEventToCloseBtn() {
         document.getElementById("closeAlertBtn").onclick = () => {
+            AlertWindow.writeOK();
             this.backGroundFonBox.hidden = true;
             this.alertMessageBox.hidden = true;
         }
@@ -888,6 +889,25 @@ class AlertWindow {
         this.parag.innerHTML = textParam.toString();
         this.backGroundFonBox.hidden = false;
         this.alertMessageBox.hidden = false;
+
+        document.getElementById("closeAlertBtn").onclick = () => {
+            AlertWindow.writeOK();
+            this.backGroundFonBox.hidden = true;
+            this.alertMessageBox.hidden = true;
+        }
+    }
+
+    showMessageWithCallback(textParam, callback) {
+        this.parag.innerHTML = textParam.toString();
+        this.backGroundFonBox.hidden = false;
+        this.alertMessageBox.hidden = false;
+
+        document.getElementById("closeAlertBtn").onclick = () => {
+            AlertWindow.writeOK();
+            this.backGroundFonBox.hidden = true;
+            this.alertMessageBox.hidden = true;
+            callback();
+        }
     }
 }
 /* harmony export (immutable) */ __webpack_exports__["a"] = AlertWindow;
